@@ -1,7 +1,7 @@
 {
     "name": "savvy-restOrigin",
     "version": "0.0.1",
-    "description": "description": "Submit content using the REST origin to the Savvy Box",
+    "description": "Submit content using the REST origin to the Savvy Box",
     "keywords": [
         "savvy",
         "nodered"
