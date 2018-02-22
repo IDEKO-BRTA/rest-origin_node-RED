@@ -1,8 +1,6 @@
 module.exports = function (RED) {
     "use strict";
 
-	// Ojo: Ver si esto está insalado de forma nativa
-	// REF: https://stackoverflow.com/questions/6158933/how-to-make-an-http-post-request-in-node-js
     var request = require('request');
 
     function restOrigin(n) {
@@ -12,21 +10,18 @@ module.exports = function (RED) {
         // Store local copies of the node configuration (as defined in the .html)
         this.topic = n.topic;
         this.smartboxip = n.smartboxip;
-		        
+        
         // copy "this" object in case we need it in context of callbacks of other functions.
         var node = this;
-		
-		// create dummy json
-		var jsonstr = '{"workingOrder": 288, "status":"idle", "isActive":true}';
-		var dummyJSON = JSON.parse(jsonstr);
 
         // respond to inputs....
         this.on('input', function (msg) {
-            sendPush(node.smartboxip, dummyJSON, function (res) {
-                var msg = {};
-                msg.payload = res;
-                node.send(msg);
-            });
+            
+            // Get the JSON string fsrom payload and convert it to a JSON object
+            var inputJSON = JSON.parse(msg.payload);
+            
+            // Send POST with the JSON object
+            sendPOST(node, inputJSON);
         });
 
         this.on("close", function () {
@@ -36,23 +31,29 @@ module.exports = function (RED) {
         });
     }
 
-    function sendPush(smartboxip, dummyJSON) {
-        var epoch = new Date().getTime();
-
+    /*
+    * Pushes via POST the JSON object content to the smartbox
+    *
+    * @param obj node - node object
+    * @param obj inputJSON - JSON object to post
+    */
+    function sendPOST(node, inputJSON) {
+		
         var options = {
-            url: smartboxip + ':7890/restdataorigin',
-			body: dummyJSON,
-			json: true,
+            //url: node.smartboxip + ':7890/restdataorigin',
+            url: node.smartboxip,
+            body: inputJSON,
+            json: true,
             method: "POST"
         };
 		
-		request(options, function (err, res, body) {
-			if (err)
-			{
-				return err;
-			}
-			return body;
-		});
+        // Submit request
+        request(options, function (err, res, body) {
+            var msg = {};
+            if (err) msg.payload = err;
+            msg.payload = body;
+            node.send(msg);
+        });
     }
 
     // Register the node by name. This must be called before overriding any of the
