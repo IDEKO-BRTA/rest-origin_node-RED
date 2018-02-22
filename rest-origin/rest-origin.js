@@ -17,7 +17,7 @@ module.exports = function (RED) {
         // respond to inputs....
         this.on('input', function (msg) {
             
-            // Get the JSON string fsrom payload and convert it to a JSON object
+            // Get the JSON string from payload and convert it to a JSON object
             var inputJSON = JSON.parse(msg.payload);
             
             // Send POST with the JSON object
