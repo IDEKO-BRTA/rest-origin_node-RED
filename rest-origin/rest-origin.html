@@ -1,0 +1,42 @@
+<script type="text/x-red" data-template-name="rest-origin">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+    <br/>
+    <div class="form-row">
+        <label for="node-input-smartboxip"><i class="fa fa-tag"></i> SmartBox IP</label>
+        <input type="text" id="node-input-smartboxip" placeholder="smartbox ip">
+    </div>
+
+</script>
+
+<!-- Next, some simple help text is provided for the node.                   -->
+<script type="text/x-red" data-help-name="rest-origin">
+    <p>Allows to submit data to the Savvy box using the REST data origin.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('rest-origin', {
+        category: 'rest-origin',
+        defaults: {
+            name: {
+                value: ""
+            },
+            smartboxip: {
+                value: ""
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "arrow-in.png",
+        color: "#E9967A",
+        label: function () {
+            return this.name || "REST-origin Savvy node ";
+        },
+        labelStyle: function () {
+            return this.name ? "node_label_italic" : "";
+        }
+    });
+</script>
