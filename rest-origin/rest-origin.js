@@ -40,8 +40,7 @@ module.exports = function (RED) {
     function sendPOST(node, inputJSON) {
 		
         var options = {
-            //url: node.smartboxip + ':7890/restdataorigin',
-            url: node.smartboxip,
+            url: node.smartboxip + ':7890/restdataorigin',
             body: inputJSON,
             json: true,
             method: "POST"
