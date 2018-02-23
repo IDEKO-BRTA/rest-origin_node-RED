@@ -22,6 +22,12 @@ module.exports = function (RED) {
             
             // Send POST with the JSON object
             sendPOST(node, inputJSON);
+		
+            // Create an empty JSON (ping) to maintain the conection alive
+            var pingJSON = JSON.parse('{}');
+
+            // Send POST with the empty JSON to keep the conection alive
+            sendPOST(node, pingJSON);
         });
 
         this.on("close", function () {
